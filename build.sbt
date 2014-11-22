@@ -1,3 +1,4 @@
+
 name := "Akka SMPP"
 
 organization := "akkasmpp"
@@ -19,4 +20,10 @@ libraryDependencies += "org.scalatest" %% "scalatest" % "2.2.1" % "test"
 libraryDependencies += "org.scalacheck" %% "scalacheck" % "1.11.5" % "test"
 
 net.virtualvoid.sbt.graph.Plugin.graphSettings
+
+assemblyJarName in assembly := "something.jar"
+
+test in assembly := {}
+
+mainClass in assembly := Some("akkasmpp.Demo")
 
