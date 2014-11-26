@@ -25,6 +25,25 @@ object Demo extends App {
   implicit val t: Timeout = 5.seconds
   import scala.concurrent.ExecutionContext.Implicits.global
 
+//  val sms = "Привет"
+//
+//  println(new OctetString(sms.getBytes("UTF-16")))
+//  println(new OctetString(sms.getBytes("UTF-16BE")))
+//  println(new OctetString(sms.getBytes("UTF-16LE")))
+//  println(new OctetString(sms.getBytes("UTF-8")))
+//
+//  println()
+//
+//  sms.getBytes("UTF-16").map{bayt => print(bayt.toString)}
+//  println()
+//  sms.getBytes("UTF-16BE").map{bayt => print(bayt.toString)}
+//  println()
+//  sms.getBytes("UTF-16LE").map{bayt => print(bayt.toString)}
+//  println()
+//  sms.getBytes("UTF-8").map{bayt => print(bayt.toString)}
+//  println()
+
+
   /*
     Demo server
    */
@@ -67,14 +86,13 @@ object Demo extends App {
 //      println("client sending message completed.")
 //      println(x)
 //    }
-    val test = "Привет."
-//    val msg = new String(test.getBytes("Cp1251"), "UTF-16")
-//    println(msg)
+    val test = "Çанаккö.şipı"
     (client ? SendMessage(test, Did("996558047694", TypeOfNumber.International, NumericPlanIndicator.E164),
-        Did("9898", TypeOfNumber.Unknown, NumericPlanIndicator.E164))) onComplete { x =>
+      Did("9898", TypeOfNumber.Unknown, NumericPlanIndicator.E164))) onComplete { x =>
       println("client sending message completed.")
       println(x)
     }
+  }
 
 
 //      implicit def str2CoctetString(s: String): COctetString = new COctetString(s)(java.nio.charset.Charset.forName("ASCII"))
@@ -84,9 +102,9 @@ object Demo extends App {
 //      println("client sending raw pdu completed.")
 //      println(x)
 //    }
-  }
+//  }
 
-
+//  implicit def str2CoctetString(s: String): COctetString = new COctetString(s)(java.nio.charset.Charset.forName("ASCII"))
 //  val c = SmppClient.connect(SmppClientConfig(new InetSocketAddress("10.230.16.10", 2885)), {
 //    case d: SmscRequest => GenericNack(CommandStatus.ESME_RINVCMDID, d.sequenceNumber)
 //  }, "client")

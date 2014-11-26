@@ -194,20 +194,12 @@ class SmppClient(config: SmppClientConfig, receiver: ClientReceive, pduLogger: P
   def bound(wire: SmppPipeLine, connection: ActorRef): Actor.Receive = {
     case SendMessage(msg, to, from, encoding) =>
       // XXX: Support concat and non-ascii
-      println("\n\n\n"+msg+"\n\n\n")
-      val tmp = msg.getBytes("UTF-16")
-
-      val body: Array[Byte] =  for{ b <- tmp
-        if(b>0)
-      }yield b
-
-      body foreach (ch => println(ch))
-      println("/////////\n")
+      val body = msg.getBytes("UTF-16BE")
       val seqNum = sequenceNumberGen.next
       implicit val encoding = java.nio.charset.Charset.forName("UTF-8")
       val cmd = SubmitSm(seqNum, ServiceType.Default, from.`type`, from.npi, new COctetString(from.number),
                          to.`type`, to.npi, new COctetString(to.number), EsmClass(EsmClass.MessagingMode.Default, EsmClass.MessageType.NormalMessage),
-                         0x34, Priority.Level0, NullTime, NullTime, RegisteredDelivery(), false, DataCodingScheme.SmscDefaultAlphabet,
+                         0x34, Priority.Level0, NullTime, NullTime, RegisteredDelivery(), false, DataCodingScheme.UCS2,
                          0x0, body.length.toByte, new OctetString(body), Nil)
       log.info(s"Sending message $cmd")
       connection ! wire.Command(cmd)
